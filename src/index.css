@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Palm Springs Modernism Color Palette - Sophisticated & Muted */
+    --background: 30 20% 96%;
+    --foreground: 175 30% 18%;
+
+    --card: 30 15% 98%;
+    --card-foreground: 175 30% 18%;
+
+    --popover: 30 15% 98%;
+    --popover-foreground: 175 30% 18%;
+
+    /* Deep Teal - Primary */
+    --primary: 175 45% 42%;
+    --primary-foreground: 30 20% 96%;
+
+    /* Dusty Rose - Secondary */
+    --secondary: 350 25% 88%;
+    --secondary-foreground: 175 30% 18%;
+
+    --muted: 30 15% 92%;
+    --muted-foreground: 175 20% 40%;
+
+    /* Muted Terracotta Pink - Accent */
+    --accent: 355 35% 65%;
+    --accent-foreground: 30 20% 96%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 175 20% 82%;
+    --input: 175 20% 82%;
+    --ring: 175 45% 42%;
+
+    --radius: 0.25rem;
+
+    /* Custom Palm Springs tokens */
+    --turquoise: 175 45% 42%;
+    --turquoise-light: 175 35% 65%;
+    --turquoise-dark: 175 50% 30%;
+    --pink-sky: 355 20% 90%;
+    --pink-sunset: 355 30% 78%;
+    --coral: 12 45% 65%;
+    --cream: 35 30% 95%;
+    --palm-green: 150 30% 32%;
+
+    /* Gradients - More subtle, teal-forward */
+    --gradient-sky: linear-gradient(180deg, hsl(355 20% 90%) 0%, hsl(30 20% 96%) 40%, hsl(175 35% 75%) 100%);
+    --gradient-sunset: linear-gradient(135deg, hsl(355 25% 85%) 0%, hsl(30 20% 94%) 100%);
+    --gradient-turquoise: linear-gradient(180deg, hsl(175 45% 42%) 0%, hsl(175 50% 30%) 100%);
+
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(172 40% 55% / 0.15);
+    --shadow-card: 0 8px 32px -8px hsl(180 25% 15% / 0.1);
+    --shadow-elevated: 0 16px 48px -12px hsl(180 25% 15% / 0.15);
+
+    /* Typography */
+    --font-display: 'Josefin Sans', sans-serif;
+    --font-body: system-ui, -apple-system, sans-serif;
+
+    /* Transitions */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 175 30% 10%;
+    --foreground: 30 20% 96%;
+
+    --card: 175 25% 14%;
+    --card-foreground: 30 20% 96%;
+
+    --popover: 175 25% 14%;
+    --popover-foreground: 30 20% 96%;
+
+    --primary: 175 40% 50%;
+    --primary-foreground: 175 30% 10%;
+
+    --secondary: 355 20% 25%;
+    --secondary-foreground: 30 20% 96%;
+
+    --muted: 175 20% 18%;
+    --muted-foreground: 30 15% 65%;
+
+    --accent: 355 30% 55%;
+    --accent-foreground: 30 20% 96%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 175 20% 22%;
+    --input: 175 20% 22%;
+    --ring: 175 40% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .gradient-sky {
+    background: var(--gradient-sky);
+  }
+
+  .gradient-sunset {
+    background: var(--gradient-sunset);
+  }
+
+  .gradient-turquoise {
+    background: var(--gradient-turquoise);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Geometric decorative line */
+  .geo-line {
+    @apply h-px bg-primary/30;
+  }
+
+  .geo-line-accent {
+    @apply h-0.5 bg-accent;
+  }
+}
+
+/* Custom animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.6s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}

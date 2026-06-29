@@ -1,0 +1,14 @@
+# Isabelle Ulfsdotter
+
+Product leader and builder based in Brussels.
+
+## Core Pages
+
+- [Home](https://ulfsdotter.com/): Product leadership profile and project overview.
+- [HAL](https://ulfsdotter.com/projects/hal): Personal knowledge system with semantic search, MCP, RAG, and data sovereignty.
+- [Bizzit](https://ulfsdotter.com/projects/bizzit): AI-powered business memory tool that turns photos or vague references into structured contact cards.
+- [Chromos](https://ulfsdotter.com/projects/chromos): Color palette app for getting dressed, using vector search and graph thinking.
+
+## Contact
+
+- [LinkedIn](https://www.linkedin.com/in/isabelle-ulfsdotter-netus/)

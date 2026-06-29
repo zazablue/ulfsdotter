@@ -1,0 +1,28 @@
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/projects/hal",
+        "destination": "/projects/hal.html"
+      },
+      {
+        "source": "/projects/bizzit",
+        "destination": "/projects/bizzit.html"
+      },
+      {
+        "source": "/projects/chromos",
+        "destination": "/projects/chromos.html"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
