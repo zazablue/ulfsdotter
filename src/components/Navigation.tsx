@@ -17,6 +17,7 @@ const Navigation = () => {
   const navLinks = [
     { href: "/#about", label: "About" },
     { href: "/#work", label: "Work" },
+    { href: "/blog", label: "Writing" },
     { href: "/#contact", label: "Contact" },
   ];
   const resumeHref = "https://www.linkedin.com/in/isabelle-ulfsdotter-netus/";

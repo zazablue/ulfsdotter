@@ -1,15 +1,86 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile, readdir } from "node:fs/promises";
 import path from "node:path";
+import matter from "gray-matter";
+import { marked } from "marked";
 
 const siteUrl = "https://ulfsdotter.com";
+const authorName = "Isabelle Ulfsdotter";
+const authorLinkedIn = "https://www.linkedin.com/in/isabelle-ulfsdotter-netus/";
 const currentYear = new Date().getFullYear();
 
-const routes = [
+const escapeHtml = (value) =>
+  String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+
+const absoluteUrl = (routePath = "/") => `${siteUrl}${routePath === "/" ? "/" : routePath}`;
+
+const formatDate = (dateString) => {
+  if (!dateString) return "";
+  const d = new Date(dateString);
+  if (Number.isNaN(d.getTime())) return dateString;
+  return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+};
+
+const toIsoDate = (dateString) => {
+  if (!dateString) return "";
+  const d = new Date(dateString);
+  if (Number.isNaN(d.getTime())) return "";
+  return d.toISOString();
+};
+
+// ---------- Load blog posts ----------
+
+const normalizeDate = (value) => {
+  if (!value) return "";
+  if (value instanceof Date) return value.toISOString().split("T")[0];
+  return String(value);
+};
+
+const loadPosts = async () => {
+  const dir = path.join("content", "blog");
+  let files;
+  try {
+    files = await readdir(dir);
+  } catch {
+    return [];
+  }
+  const posts = [];
+  for (const file of files) {
+    if (!file.endsWith(".md")) continue;
+    const raw = await readFile(path.join(dir, file), "utf8");
+    const { data, content } = matter(raw);
+    if (data.draft) continue;
+    const slug = typeof data.slug === "string" ? data.slug : file.replace(/\.md$/, "");
+    posts.push({
+      slug,
+      title: String(data.title ?? "Untitled"),
+      date: normalizeDate(data.date),
+      description: String(data.description ?? ""),
+      tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
+      ogImage: typeof data.ogImage === "string" ? data.ogImage : `/og/${slug}.png`,
+      body: content,
+      html: marked.parse(content),
+    });
+  }
+  posts.sort((a, b) => (a.date < b.date ? 1 : -1));
+  return posts;
+};
+
+const posts = await loadPosts();
+
+// ---------- Static routes ----------
+
+const staticRoutes = [
   {
     path: "/",
     title: "Isabelle Ulfsdotter | Product Leader and Builder",
     description:
       "Product leader in Brussels building HAL, Bizzit, and Chromos. Portfolio covering product strategy, AI projects, data sovereignty, mobile apps, and product discovery.",
+    ogImage: "/og/home.png",
     sections: [
       {
         heading: "Isabelle Ulfsdotter",
@@ -40,6 +111,17 @@ const routes = [
         ],
       },
       {
+        heading: "Writing",
+        paragraphs: [
+          "Working notes from building products, tinkering with AI, and thinking about product strategy.",
+        ],
+        items: posts.slice(0, 5).map((post) => ({
+          title: post.title,
+          href: `/blog/${post.slug}`,
+          text: post.description,
+        })),
+      },
+      {
         heading: "Contact",
         paragraphs: [
           "I am based in Brussels and am always happy to connect with fellow builders and tinkerers.",
@@ -47,7 +129,7 @@ const routes = [
         items: [
           {
             title: "LinkedIn",
-            href: "https://www.linkedin.com/in/isabelle-ulfsdotter-netus/",
+            href: authorLinkedIn,
             text: "Connect with Isabelle Ulfsdotter on LinkedIn.",
           },
         ],
@@ -59,6 +141,7 @@ const routes = [
     title: "HAL | Isabelle Ulfsdotter",
     description:
       "HAL is a personal knowledge system with semantic search, MCP, RAG, and local Markdown storage built to test context sovereignty.",
+    ogImage: "/og/project-hal.png",
     sections: [
       {
         heading: "HAL",
@@ -83,10 +166,7 @@ const routes = [
           { title: "Storage", text: "Local Markdown files with Time Machine backups." },
           { title: "Search", text: "Weaviate for semantic and keyword search." },
           { title: "Embeddings", text: "Mistral." },
-          {
-            title: "Interface",
-            text: "An MCP server that any compatible AI can connect to.",
-          },
+          { title: "Interface", text: "An MCP server that any compatible AI can connect to." },
         ],
       },
       {
@@ -111,6 +191,7 @@ const routes = [
     title: "Bizzit | Isabelle Ulfsdotter",
     description:
       "Bizzit is an AI-powered business memory tool that turns photos or vague business references into structured contact cards.",
+    ogImage: "/og/project-bizzit.png",
     sections: [
       {
         heading: "Bizzit",
@@ -153,6 +234,7 @@ const routes = [
     title: "Chromos | Isabelle Ulfsdotter",
     description:
       "Chromos is a color palette app for getting dressed, combining color similarity, vector search, and graph thinking for wardrobe suggestions.",
+    ogImage: "/og/project-chromos.png",
     sections: [
       {
         heading: "Chromos",
@@ -193,24 +275,45 @@ const routes = [
   },
 ];
 
-const escapeHtml = (value) =>
-  String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
+// Blog listing route
+const blogListingRoute = {
+  path: "/blog",
+  title: "Writing | Isabelle Ulfsdotter",
+  description:
+    "Working notes from building products, tinkering with AI, and thinking about product strategy.",
+  ogImage: "/og/blog.png",
+  sections: [
+    {
+      heading: "Writing",
+      paragraphs: [
+        "Working notes from building products, tinkering with AI, and thinking about product strategy. New posts appear here as I publish them.",
+      ],
+      items: posts.map((post) => ({
+        title: post.title,
+        href: `/blog/${post.slug}`,
+        text: `${formatDate(post.date)} — ${post.description}`,
+      })),
+    },
+  ],
+};
+
+const allRoutes = [...staticRoutes, blogListingRoute];
+
+// ---------- HTML injection helpers ----------
 
 const stripExistingCrawlerContent = (html) =>
   html
     .replace(/\n?\s*<noscript id="crawler-content">[\s\S]*?<\/noscript>\s*\n?/g, "\n")
     .replace(/\n?\s*<script type="application\/ld\+json">[\s\S]*?<\/script>\s*\n?/g, "\n");
 
-const absoluteUrl = (routePath = "/") => `${siteUrl}${routePath === "/" ? "/" : routePath}`;
+const setTag = (html, pattern, replacement) =>
+  pattern.test(html) ? html.replace(pattern, replacement) : html.replace("</head>", `${replacement}\n</head>`);
+
+const removeTag = (html, pattern) => html.replace(pattern, "");
 
 const renderSection = (section) => {
   const paragraphs = (section.paragraphs ?? [])
-    .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+    .map((p) => `<p>${escapeHtml(p)}</p>`)
     .join("\n");
   const items = (section.items ?? [])
     .map((item) => {
@@ -221,7 +324,6 @@ const renderSection = (section) => {
     })
     .join("\n");
   const list = items ? `<ul>\n${items}\n</ul>` : "";
-
   return `<section>
 <h2>${escapeHtml(section.heading)}</h2>
 ${paragraphs}
@@ -229,18 +331,21 @@ ${list}
 </section>`;
 };
 
-const renderCrawlerContent = (route) => `<noscript id="crawler-content">
-<div>
-<header>
-<p><a href="/">Isabelle Ulfsdotter</a></p>
-<nav aria-label="Primary">
+const crawlerNav = `<nav aria-label="Primary">
 <a href="/#about">About</a>
 <a href="/#work">Work</a>
+<a href="/blog">Writing</a>
 <a href="/#contact">Contact</a>
 <a href="/projects/hal">HAL</a>
 <a href="/projects/bizzit">Bizzit</a>
 <a href="/projects/chromos">Chromos</a>
-</nav>
+</nav>`;
+
+const renderCrawlerContent = (route) => `<noscript id="crawler-content">
+<div>
+<header>
+<p><a href="/">Isabelle Ulfsdotter</a></p>
+${crawlerNav}
 </header>
 <main>
 ${route.sections.map(renderSection).join("\n")}
@@ -251,72 +356,199 @@ ${route.sections.map(renderSection).join("\n")}
 </div>
 </noscript>`;
 
-const setTag = (html, pattern, replacement) =>
-  pattern.test(html) ? html.replace(pattern, replacement) : html.replace("</head>", `${replacement}\n</head>`);
+const renderPostCrawlerContent = (post) => `<noscript id="crawler-content">
+<div>
+<header>
+<p><a href="/">Isabelle Ulfsdotter</a></p>
+${crawlerNav}
+</header>
+<main>
+<article>
+<header>
+<h1>${escapeHtml(post.title)}</h1>
+<p><time datetime="${escapeHtml(post.date)}">${escapeHtml(formatDate(post.date))}</time> — by <a href="${siteUrl}" rel="author">${escapeHtml(authorName)}</a></p>
+${post.tags.length ? `<p>Tags: ${post.tags.map((t) => escapeHtml(t)).join(", ")}</p>` : ""}
+${post.description ? `<p><em>${escapeHtml(post.description)}</em></p>` : ""}
+</header>
+${post.html}
+<footer>
+<p><a href="/blog">Back to writing</a></p>
+</footer>
+</article>
+</main>
+<footer>
+<p>Based in Brussels. Copyright ${currentYear} Isabelle Ulfsdotter.</p>
+</footer>
+</div>
+</noscript>`;
 
-const renderJsonLd = (route) => {
-  const isHome = route.path === "/";
-  const jsonLd = isHome
-    ? {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        name: "Isabelle Ulfsdotter",
-        url: siteUrl,
-        jobTitle: "Product leader",
-        address: { "@type": "PostalAddress", addressLocality: "Brussels", addressCountry: "Belgium" },
-        sameAs: ["https://www.linkedin.com/in/isabelle-ulfsdotter-netus/"],
-        knowsAbout: ["Product management", "AI products", "Data strategy", "MCP", "RAG", "Mobile apps"],
-      }
-    : {
-        "@context": "https://schema.org",
-        "@type": "CreativeWork",
-        name: route.sections[0].heading,
-        headline: route.title,
-        description: route.description,
-        url: absoluteUrl(route.path),
-        author: { "@type": "Person", name: "Isabelle Ulfsdotter", url: siteUrl },
-      };
+const renderPersonJsonLd = () => ({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: authorName,
+  url: siteUrl,
+  jobTitle: "Product leader",
+  address: { "@type": "PostalAddress", addressLocality: "Brussels", addressCountry: "Belgium" },
+  sameAs: [authorLinkedIn],
+  knowsAbout: ["Product management", "AI products", "Data strategy", "MCP", "RAG", "Mobile apps"],
+});
 
-  return `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`;
-};
+const renderCreativeWorkJsonLd = (route) => ({
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: route.sections[0].heading,
+  headline: route.title,
+  description: route.description,
+  url: absoluteUrl(route.path),
+  author: { "@type": "Person", name: authorName, url: siteUrl },
+});
 
-const applyRouteMetadata = (html, route) => {
-  const canonical = absoluteUrl(route.path);
+const renderBlogListingJsonLd = () => ({
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: "Writing — Isabelle Ulfsdotter",
+  url: absoluteUrl("/blog"),
+  author: { "@type": "Person", name: authorName, url: siteUrl },
+  blogPost: posts.map((post) => ({
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    url: absoluteUrl(`/blog/${post.slug}`),
+    datePublished: toIsoDate(post.date),
+    author: { "@type": "Person", name: authorName, url: siteUrl },
+    keywords: post.tags.join(", "),
+  })),
+});
+
+const renderPostJsonLd = (post) => ({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.title,
+  description: post.description,
+  url: absoluteUrl(`/blog/${post.slug}`),
+  datePublished: toIsoDate(post.date),
+  dateModified: toIsoDate(post.date),
+  author: { "@type": "Person", name: authorName, url: siteUrl, sameAs: [authorLinkedIn] },
+  publisher: { "@type": "Person", name: authorName, url: siteUrl },
+  mainEntityOfPage: { "@type": "WebPage", "@id": absoluteUrl(`/blog/${post.slug}`) },
+  image: absoluteUrl(post.ogImage),
+  keywords: post.tags.join(", "),
+  articleBody: post.body,
+  inLanguage: "en",
+});
+
+const asLdScript = (obj) =>
+  `<script type="application/ld+json">${JSON.stringify(obj)}</script>`;
+
+// ---------- Meta tag application ----------
+
+const applyMetaTags = (html, meta) => {
+  const canonical = absoluteUrl(meta.path);
   let next = stripExistingCrawlerContent(html);
 
-  next = setTag(next, /<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(route.title)}</title>`);
+  next = setTag(next, /<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(meta.title)}</title>`);
   next = setTag(
     next,
     /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/,
-    `<meta name="description" content="${escapeHtml(route.description)}" />`,
+    `<meta name="description" content="${escapeHtml(meta.description)}" />`,
   );
   next = setTag(
     next,
     /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/,
     `<link rel="canonical" href="${canonical}" />`,
   );
-  next = setTag(next, /<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/, `<meta property="og:title" content="${escapeHtml(route.title)}" />`);
+
+  // Open Graph
+  next = setTag(
+    next,
+    /<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/,
+    `<meta property="og:title" content="${escapeHtml(meta.title)}" />`,
+  );
   next = setTag(
     next,
     /<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/,
-    `<meta property="og:description" content="${escapeHtml(route.description)}" />`,
+    `<meta property="og:description" content="${escapeHtml(meta.description)}" />`,
   );
-  next = setTag(next, /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/?>/, `<meta name="twitter:title" content="${escapeHtml(route.title)}" />`);
+  next = setTag(
+    next,
+    /<meta\s+property="og:type"\s+content="[^"]*"\s*\/?>/,
+    `<meta property="og:type" content="${meta.ogType ?? "website"}" />`,
+  );
+  next = setTag(
+    next,
+    /<meta\s+property="og:image"\s+content="[^"]*"\s*\/?>/,
+    `<meta property="og:image" content="${escapeHtml(absoluteUrl(meta.ogImage))}" />`,
+  );
+  next = setTag(
+    next,
+    /<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/,
+    `<meta property="og:url" content="${canonical}" />`,
+  );
+
+  // Twitter
+  next = setTag(
+    next,
+    /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/?>/,
+    `<meta name="twitter:title" content="${escapeHtml(meta.title)}" />`,
+  );
   next = setTag(
     next,
     /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/?>/,
-    `<meta name="twitter:description" content="${escapeHtml(route.description)}" />`,
+    `<meta name="twitter:description" content="${escapeHtml(meta.description)}" />`,
   );
-  next = setTag(next, /<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/, `<meta property="og:url" content="${canonical}" />`);
+  next = setTag(
+    next,
+    /<meta\s+name="twitter:image"\s+content="[^"]*"\s*\/?>/,
+    `<meta name="twitter:image" content="${escapeHtml(absoluteUrl(meta.ogImage))}" />`,
+  );
 
-  return next.replace('<div id="root"></div>', `${renderCrawlerContent(route)}\n    <div id="root"></div>\n    ${renderJsonLd(route)}`);
+  // Article-specific tags (only for blog posts)
+  next = removeTag(next, /\s*<meta\s+property="article:published_time"\s+content="[^"]*"\s*\/?>/g);
+  next = removeTag(next, /\s*<meta\s+property="article:author"\s+content="[^"]*"\s*\/?>/g);
+  next = removeTag(next, /\s*<meta\s+property="article:tag"\s+content="[^"]*"\s*\/?>/g);
+
+  if (meta.publishedTime) {
+    const articleTags = [
+      `<meta property="article:published_time" content="${escapeHtml(meta.publishedTime)}" />`,
+      `<meta property="article:author" content="${escapeHtml(authorName)}" />`,
+      ...(meta.tags ?? []).map(
+        (t) => `<meta property="article:tag" content="${escapeHtml(t)}" />`,
+      ),
+    ].join("\n    ");
+    next = next.replace("</head>", `    ${articleTags}\n</head>`);
+  }
+
+  return next;
 };
+
+// ---------- Build ----------
 
 const templatePath = path.join("dist", "index.html");
 const template = await readFile(templatePath, "utf8");
 
-for (const route of routes) {
-  const html = applyRouteMetadata(template, route);
+// Non-blog-post routes (home, project pages, blog listing)
+for (const route of allRoutes) {
+  const meta = {
+    path: route.path,
+    title: route.title,
+    description: route.description,
+    ogImage: route.ogImage,
+    ogType: "website",
+  };
+  let html = applyMetaTags(template, meta);
+
+  const jsonLd =
+    route.path === "/"
+      ? renderPersonJsonLd()
+      : route.path === "/blog"
+        ? renderBlogListingJsonLd()
+        : renderCreativeWorkJsonLd(route);
+
+  html = html.replace(
+    '<div id="root"></div>',
+    `${renderCrawlerContent(route)}\n    <div id="root"></div>\n    ${asLdScript(jsonLd)}`,
+  );
+
   if (route.path === "/") {
     await writeFile(path.join("dist", "index.html"), html);
   } else {
@@ -326,12 +558,43 @@ for (const route of routes) {
   }
 }
 
+// Blog post routes
+for (const post of posts) {
+  const meta = {
+    path: `/blog/${post.slug}`,
+    title: `${post.title} | Isabelle Ulfsdotter`,
+    description: post.description,
+    ogImage: post.ogImage,
+    ogType: "article",
+    publishedTime: toIsoDate(post.date),
+    tags: post.tags,
+  };
+  let html = applyMetaTags(template, meta);
+  html = html.replace(
+    '<div id="root"></div>',
+    `${renderPostCrawlerContent(post)}\n    <div id="root"></div>\n    ${asLdScript(renderPostJsonLd(post))}`,
+  );
+  const outputPath = path.join("dist", "blog", `${post.slug}.html`);
+  await mkdir(path.dirname(outputPath), { recursive: true });
+  await writeFile(outputPath, html);
+}
+
+// ---------- Sitemap ----------
+
+const sitemapEntries = [
+  ...allRoutes.map((r) => ({ loc: absoluteUrl(r.path), lastmod: null })),
+  ...posts.map((p) => ({
+    loc: absoluteUrl(`/blog/${p.slug}`),
+    lastmod: toIsoDate(p.date),
+  })),
+];
+
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${routes
+${sitemapEntries
   .map(
-    (route) => `  <url>
-    <loc>${absoluteUrl(route.path)}</loc>
+    (e) => `  <url>
+    <loc>${e.loc}</loc>${e.lastmod ? `\n    <lastmod>${e.lastmod}</lastmod>` : ""}
   </url>`,
   )
   .join("\n")}
@@ -339,19 +602,69 @@ ${routes
 `;
 await writeFile(path.join("dist", "sitemap.xml"), sitemap);
 
+// ---------- llms.txt ----------
+
 const llms = `# Isabelle Ulfsdotter
 
-Product leader and builder based in Brussels.
+Product leader and builder based in Brussels. This site collects finished projects and working notes from an ongoing practice of building small, honest software — often with AI in the loop.
 
 ## Core Pages
 
 - [Home](${siteUrl}/): Product leadership profile and project overview.
+- [Writing](${siteUrl}/blog): Working notes and essays on product, AI, and building.
 - [HAL](${siteUrl}/projects/hal): Personal knowledge system with semantic search, MCP, RAG, and data sovereignty.
 - [Bizzit](${siteUrl}/projects/bizzit): AI-powered business memory tool that turns photos or vague references into structured contact cards.
 - [Chromos](${siteUrl}/projects/chromos): Color palette app for getting dressed, using vector search and graph thinking.
 
+## Posts
+${
+  posts.length
+    ? posts
+        .map(
+          (p) =>
+            `\n- [${p.title}](${siteUrl}/blog/${p.slug}) (${p.date}) — ${p.description}`,
+        )
+        .join("")
+    : "\n\n_No posts yet._"
+}
+
 ## Contact
 
-- [LinkedIn](https://www.linkedin.com/in/isabelle-ulfsdotter-netus/)
+- [LinkedIn](${authorLinkedIn})
 `;
 await writeFile(path.join("dist", "llms.txt"), llms);
+
+// ---------- RSS ----------
+
+const rssItems = posts
+  .map(
+    (post) => `    <item>
+      <title>${escapeHtml(post.title)}</title>
+      <link>${absoluteUrl(`/blog/${post.slug}`)}</link>
+      <guid isPermaLink="true">${absoluteUrl(`/blog/${post.slug}`)}</guid>
+      <pubDate>${new Date(post.date || Date.now()).toUTCString()}</pubDate>
+      <description>${escapeHtml(post.description)}</description>
+      <content:encoded><![CDATA[${post.html}]]></content:encoded>
+      ${post.tags.map((t) => `<category>${escapeHtml(t)}</category>`).join("\n      ")}
+    </item>`,
+  )
+  .join("\n");
+
+const rss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Isabelle Ulfsdotter — Writing</title>
+    <link>${siteUrl}/blog</link>
+    <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml" />
+    <description>Working notes from building products, tinkering with AI, and thinking about product strategy.</description>
+    <language>en</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+${rssItems}
+  </channel>
+</rss>
+`;
+await writeFile(path.join("dist", "rss.xml"), rss);
+
+console.log(
+  `[build-crawler-pages] Wrote ${allRoutes.length} static routes, ${posts.length} blog posts, sitemap, rss, llms.txt`,
+);

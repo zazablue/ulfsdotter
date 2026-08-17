@@ -1,6 +1,7 @@
 {
   "hosting": {
     "public": "dist",
+    "cleanUrls": true,
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -18,6 +19,10 @@
       {
         "source": "/projects/chromos",
         "destination": "/projects/chromos.html"
+      },
+      {
+        "source": "/blog",
+        "destination": "/blog.html"
       },
       {
         "source": "**",
