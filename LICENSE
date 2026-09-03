@@ -1,0 +1,51 @@
+Copyright (c) 2026 Isabelle Ulfsdotter
+
+Except as noted below, all rights reserved.
+
+
+## Written content — CC BY 4.0
+
+All prose under `content/` (including blog posts) is licensed under
+Creative Commons Attribution 4.0 International:
+
+    https://creativecommons.org/licenses/by/4.0/
+
+You may share and adapt this content for any purpose, including
+commercially, provided you give appropriate credit — attribution to
+Isabelle Ulfsdotter with a link back to the original post at
+https://ulfsdotter.com.
+
+
+## Brand assets — reserved
+
+The visual identity is not licensed for reuse. This includes, but is
+not limited to:
+
+  - The color palette (Palm Springs-inspired teal, terracotta, cream,
+    and related tokens defined in src/index.css and tailwind.config.ts)
+  - Josefin Sans usage patterns (uppercase headings, wide letter-
+    spacing, small-caps eyebrows)
+  - The diagonal teal / terracotta split motif used in the hero,
+    OG images, and favicon
+  - Hero photography (src/assets/hero-palm-springs.jpg)
+  - The favicon and derived icons (public/favicon.*,
+    public/apple-touch-icon.png)
+  - Generated Open Graph images (dist/og/*, output of
+    scripts/generate-og-images.mjs)
+  - The "ISABELLE ULFSDOTTER" wordmark and its typographic treatments
+
+Please do not adapt or reproduce these for other sites.
+
+
+## Code — reference only
+
+Source code (React components, build scripts, configuration files) is
+copyright Isabelle Ulfsdotter. You are welcome to read it and adapt
+small portions for your own projects, but please do not clone this
+repository wholesale to reproduce this site or a materially similar one.
+
+
+## Questions
+
+For licensing questions, exceptions, or requests for reuse beyond what
+is described above: iulfsdotter@gmail.com

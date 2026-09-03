@@ -31,3 +31,7 @@ The build runs Vite and then `scripts/build-crawler-pages.mjs`, which generates 
 - `scripts/build-crawler-pages.mjs`: Generates crawler-readable route HTML, sitemap, and LLM summary.
 - `public/robots.txt`: Allows crawlers and points to the sitemap.
 - `public/llms.txt`: Short LLM-readable site summary.
+
+## License
+
+Blog posts under `content/` are licensed under CC BY 4.0 (reuse with credit welcome). Branding, hero photography, favicon, and OG images are reserved. Code is copyright and provided for reference — see [LICENSE](./LICENSE) for details.
