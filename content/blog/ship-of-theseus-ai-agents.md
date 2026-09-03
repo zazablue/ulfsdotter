@@ -34,7 +34,7 @@ Of course, if all these changes produce exactly the same outcomes, there is no p
 For the sake of illustration, what kinds of changes might actually affect an agent's reputation?
 
 - Does fixing a typo in the system prompt change the agent or its reputation?
-- What about updating it from Fable 5, for example, to the newly released Fable 5.1? Anthropic has been adjusting some safeguards to reduce false positives that were frustrating Fable 5 users. That may be a perfectly sensible improvement, but it is intended to create a change in behavior.
+- What about updating it from Fable 5, for example, to the newly released Fable 5.1? Anthropic has been [adjusting some safeguards to reduce false positives](https://www.anthropic.com/news/improving-fable-5-s-biology-safeguards) that were frustrating Fable 5 users. That may be a perfectly sensible improvement, but it is intended to create a change in behavior.
 - Let us say the agent is given a smaller budget but is still instructed to obtain the lowest possible hotel price. How might that affect its behavior? Unlike what OpenAI's agents were exposed to during recent training rounds it may not be an impossible task, but it has certainly become a harder one. Might that cause it to act more aggressively or bend rules that it previously respected?
 - And what if a broker selects different models for different tasks? In that case, the thing operating as "Isabelle's assistant" may change from one transaction to the next.
 
