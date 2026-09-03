@@ -13,7 +13,7 @@ It is completely ordinary to transact with other humans whose identities we do n
 
 What I do get, however, is some reassurance that BargainBadger1974 is the same seller who earned those 4.8 stars. If I buy from them for the fifth time, I am not supposed to be dealing with an entirely different person borrowing the account's history. Even when it is a company and the employees change, I assume I am still dealing with broadly the same organization, operating under broadly the same incentives.
 
-In my last post I touched upon the topic of agents' reputation, and in particular agents whose identity is known or knowable because they represent some kind of principal. I thought the next question might be what happens when the principal cannot be identified, does not need to be identified or simply does not want to be identified.
+In my [last post](/blog/reputation-for-ai-agents) I touched upon the topic of agents' reputation, and in particular agents whose identity is known or knowable because they represent some kind of principal. I thought the next question might be what happens when the principal cannot be identified, does not need to be identified or simply does not want to be identified.
 
 But before getting there, I realized that we may already have another problem.
 
@@ -40,7 +40,7 @@ For the sake of illustration, what kinds of changes might actually affect an age
 
 So where does this leave reputation? What does it actually belong to?
 
-In the last post I treated the known principal as a fairly convenient answer. If an agent acts in my name, other people can infer certain incentives and, importantly, at least know where to start when something goes wrong. My identity provides a degree of continuity and possibility of recourse.
+In the [last post](/blog/reputation-for-ai-agents) I treated the known principal as a fairly convenient answer. If an agent acts in my name, other people can infer certain incentives and, importantly, at least know where to start when something goes wrong. My identity provides a degree of continuity and possibility of recourse.
 
 But it only provides continuity at the level of the principal. It does not tell anybody whether the version of Isabelle's assistant in front of them is meaningfully the same one that earned those five stars.
 
