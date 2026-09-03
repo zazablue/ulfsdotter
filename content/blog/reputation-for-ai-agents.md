@@ -9,7 +9,7 @@ tags:
 draft: false
 ---
 
-Last week I wrote about the social temperament of AI agents: how readily they should trust one another, when they should cooperate or maintain an independent view, and why the right calibration probably depends on what they are doing and where.
+Last week I wrote about [the social temperament of AI agents](/blog/social-temperament-ai-agents): how readily they should trust one another, when they should cooperate or maintain an independent view, and why the right calibration probably depends on what they are doing and where.
 
 Towards the end of the [Anthropic research](https://www.anthropic.com/research/multiagent-systems) that prompted those thoughts, the authors point to another part of the problem. Human cooperation does not depend on temperament alone. We have also built norms, systems of reputation, credible ways of signaling trustworthiness (e.g. putting down a deposit or providing a product guarantee), and forms of recourse such as insurance and the courts. Agents, as Anthropic rather neatly puts it, currently enter the market with "no reputation to lose, no court to appeal to, and no colleague who remembers them."
 
