@@ -1,7 +1,7 @@
 ---
 title: "Is Europe's AI Sovereignty Debate Missing a Layer?"
 date: 2026-09-09
-description: AI agents will need identity, authority and payment infrastructure. Europe risks creating a new dependency between AI and finance.
+description: AI agents will need identity, authorization and trust infrastructure. Europe risks relying on foreign networks to decide which agents can act and transact.
 tags:
   - AI
   - Sovereignty
