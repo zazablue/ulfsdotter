@@ -39,7 +39,7 @@ The practicality part may already have been met. Meta’s glasses look like ordi
 
 Workplaces seem like an obvious problem. Companies do not want their intellectual property, customer information or private meetings captured by employees’ personal devices. Nor can I imagine HR departments being delighted by every stupid office remark acquiring its own audiovisual record. Schools have the additional problems of cheating and children recording other children. Hospitals and courts already restrict recording devices for obvious reasons.
 
-Some restrictions are already appearing. [Polk County Public Schools](https://www.polkschoolsfl.com/news/important_notice_regarding_smart_glasses) has issued guidance about smart glasses; the [Dudley Group NHS Foundation Trust](https://www.dgft.nhs.uk/patients-and-visitors/photography-filming-and-audio-recording-on-nhs-trust-premises/) asks that recording-capable wearables not be worn in its buildings; and the [Western District of New York](https://www.nywd.uscourts.gov/sites/nywd/files/SEC-2023-11-09-Amended%20General%20Order%20No.%20161%20%28PEDs%20Policy%29.pdf) expressly includes smart glasses in its rules.
+Some restrictions are already appearing in Europe. The [Dudley Group NHS Foundation Trust](https://www.dgft.nhs.uk/patients-and-visitors/photography-filming-and-audio-recording-on-nhs-trust-premises/) asks that recording-capable wearables not be worn in its buildings, and smart glasses have now been [banned from courts in England and Wales](https://www.theguardian.com/technology/2026/aug/11/meta-glasses-banned-from-courts-in-england-and-wales). Within the EU, the response so far appears to be more regulatory than prohibitory: Irish and Italian data-protection authorities challenged Meta over whether its tiny indicator light gave bystanders meaningful notice that they were being recorded. This is still a patchwork, not a general European ban.
 
 This is where continuity matters. If I cannot wear prescription Meta glasses at work, at my child’s school, in a hospital or during conversations where someone asks me to remove them, will I carry a second pair and put the Meta glasses back on afterward? Restrictions would not make the devices useless. They could, however, reduce them to something people wear for particular activities, which slightly undermines their value as ambient devices.
 
@@ -67,11 +67,21 @@ A [2026 US survey of 1,096 adults](https://www.security.org/resources/smart-glas
 
 People do not have to approve of a technology for it to become ubiquitous. They may simply get used to it. Acceptance means I think the device is legitimate. Habituation means I stop noticing it. Resignation means I still dislike it but no longer think objecting is worth the effort. To the company selling the device, these may look reassuringly similar.
 
-My husband thinks this is what will happen. His example is Flock cameras. People object, controversies arise, and the cameras continue to appear. Ambient wearables could arrive through the same gradual process, especially when new capabilities appear as software updates to watches and other objects people already own. There may be no single moment when society decides to accept them.
+Flock cameras offer one possible precedent. People object, controversies arise, and the cameras continue to appear. Ambient wearables could arrive through the same gradual process, especially when new capabilities appear as software updates to watches and other objects people already own. There may be no single moment when society decides to accept them.
 
 **Assessment: resignation seems considerably more plausible than universal trust.**
 
-## 6. Wearing them must not make you into a creepy weirdo
+## 6. The law must leave enough room for ordinary use
+
+Based on some (quick and superficial) research, it seems that Europe offers more protection than the United States, but not as comprehensive as I would have hoped (what are all those cumbersome regulations for one might wonder). Recording an identifiable person’s image or voice can amount to processing personal data under the GDPR. Outside a genuinely personal or household activity, the person or company doing the processing needs a legal basis and may also owe the subject information about what is happening. The Irish Data Protection Commission specifically describes body-worn cameras as turning the wearer into a mobile surveillance system.
+
+Belgian law is particularly odd. A person who secretly intercepts a private conversation in which they are not participating can commit an offence, but a participant may generally record their own conversation without telling the other participants. What they subsequently do with it can still violate privacy or data-protection law, but the act of recording is not automatically illegal simply because I did not consent.
+
+This leaves a question for watches and other listening devices that continuously process surrounding speech without necessarily saving a conventional recording.
+
+**Assessment: European law creates friction, but it does not amount to a clear prohibition on ambient listening or recording.**
+
+## 7. Wearing them must not make you into a creepy weirdo
 
 Google Glass showed that technical utility does not prevent a product from becoming socially repellent. Meta has made its glasses look normal, but their inconspicuousness is precisely what makes them unsettling.
 
@@ -81,13 +91,11 @@ Institutional restrictions could reinforce this by teaching people that asking f
 
 **Assessment: the social meaning of wearing them is still up for grabs.**
 
-## 7. There cannot be too many spectacular scandals
+## 8. There cannot be too many spectacular scandals
 
 The possibilities include covert recording, stalking, harassment, biometric identification, leaked conversations, compromised accounts and privacy promises containing an asterisk the size of the aforementioned hockey puck.
 
 Scandal alone does not kill technology. Smartphones and social networks have survived plenty. But a sufficiently vivid incident involving children, patients, colleagues or intimate conversations (or someone being "cancelled" for uncouth statements shared in private) could stigmatize wearers, accelerate institutional restrictions or attract regulators.
-
-Current laws are fragmented. Recording rules vary by jurisdiction, while data-protection and biometric laws may restrict what companies process. None of this gives the person standing in front of the glasses a simple answer to the question: what is that thing doing to me right now?
 
 **Assessment: too early to know, but the category has an unusually large surface area for disaster.**
 
@@ -107,6 +115,10 @@ I would like to conclude that society will reject the entire proposition with th
 - [OpenAI, “Sam & Jony introduce io”](https://openai.com/sam-and-jony/): the partnership and planned product family are confirmed; the hockey-puck form is not.
 - [TechRadar on the reported OpenAI device](https://www.techradar.com/ai-platforms-assistants/i-asked-gemini-and-chatgpt-to-build-openais-mythical-ai-hardware-the-results-are-shockingly-good-but-still-dont-make-me-want-this-usd300-plus-device): describes the hardware report as unconfirmed.
 - [IAPP, “Smart glasses at work: A policy problem hiding in plain sight”](https://iapp.org/news/a/smart-glasses-at-work-a-policy-problem-hiding-in-plain-sight): workplace confidentiality, consent and policy issues.
+- [Irish Data Protection Commission statement on Facebook View glasses](https://www.dataprotection.ie/en/news-media/latest-news/data-protection-commission-statement-concerning-facebook-view-glasses): joint Irish and Italian concern about whether Meta’s indicator gave bystanders adequate notice.
+- [Irish Data Protection Commission guidance on body-worn cameras](https://dataprotection.ie/en/dpc-guidance/guidance-body-worn-cameras-or-action-cameras): GDPR obligations and the personal or household exemption.
+- [Belgian Criminal Code, Article 314bis](https://www.jurion.fanc.fgov.be/jurdb-consult/plainWettekstServlet?lang=fr&wettekstId=4605): interception or recording of private communications by a non-participant.
+- [Belgian Court of Cassation case summary](https://justice.belgium.be/sites/default/files/downloads/lb_2015_2018_fr.pdf): recording by someone participating in the conversation is not, by itself, prohibited under Article 314bis or Article 8.1 ECHR.
 - [Ray-Ban Meta FAQ](https://www.ray-ban.com/usa/c/frequently-asked-questions-ray-ban-meta-smart-glasses): Meta’s description of the capture light.
 - [Android Central on Meta’s anti-tampering update](https://www.androidcentral.com/apps-software/meta/metas-smart-glasses-will-finally-shut-off-the-camera-if-you-try-to-hide-youre-recording): the reported anti-tampering update.
 - [Security.org, 2026 smart-glasses survey](https://www.security.org/resources/smart-glasses-statistics-report/?p=67442): US attitudes toward smart glasses.
