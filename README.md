@@ -35,3 +35,11 @@ The build runs Vite and then `scripts/build-crawler-pages.mjs`, which generates 
 ## License
 
 Blog posts under `content/` are licensed under CC BY 4.0 (reuse with credit welcome). Branding, hero photography, favicon, and OG images are reserved. Code is copyright and provided for reference — see [LICENSE](./LICENSE) for details.
+
+## Dependency security and installation
+
+Use Node.js 22.12+ (or 20.19+) and npm. `package-lock.json` is the authoritative
+lockfile; install reproducibly with `npm ci`. Stale Bun locks were removed so
+alternate installs cannot silently restore the old vulnerable dependency graph.
+Run `npm run build` and `npm run dev` before release. The typography dependency
+override stays on selector-parser 6.x and replaces its vulnerable exact pin.
